@@ -1,0 +1,215 @@
+{
+  "_comment": "Cached values from KDP Print File Setup Calculator V5, state: 333 pages, black ink + cream paper.",
+  "pageCount": 333,
+  "paper": "bw-cream",
+  "trims": [
+    {
+      "width": 5.0,
+      "height": 8.0,
+      "coverWidth": 11.0825,
+      "coverHeight": 8.25,
+      "coverSafeWidth": 10.5825,
+      "coverSafeHeight": 7.75,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 5.06,
+      "height": 7.81,
+      "coverWidth": 11.2025,
+      "coverHeight": 8.06,
+      "coverSafeWidth": 10.7025,
+      "coverSafeHeight": 7.56,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 5.25,
+      "height": 8.0,
+      "coverWidth": 11.5825,
+      "coverHeight": 8.25,
+      "coverSafeWidth": 11.0825,
+      "coverSafeHeight": 7.75,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 5.5,
+      "height": 8.5,
+      "coverWidth": 12.0825,
+      "coverHeight": 8.75,
+      "coverSafeWidth": 11.5825,
+      "coverSafeHeight": 8.25,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 6.0,
+      "height": 9.0,
+      "coverWidth": 13.0825,
+      "coverHeight": 9.25,
+      "coverSafeWidth": 12.5825,
+      "coverSafeHeight": 8.75,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 6.14,
+      "height": 9.21,
+      "coverWidth": 13.3625,
+      "coverHeight": 9.46,
+      "coverSafeWidth": 12.8625,
+      "coverSafeHeight": 8.96,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 6.69,
+      "height": 9.61,
+      "coverWidth": 14.4625,
+      "coverHeight": 9.86,
+      "coverSafeWidth": 13.9625,
+      "coverSafeHeight": 9.36,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 7.0,
+      "height": 10.0,
+      "coverWidth": 15.0825,
+      "coverHeight": 10.25,
+      "coverSafeWidth": 14.5825,
+      "coverSafeHeight": 9.75,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 7.44,
+      "height": 9.69,
+      "coverWidth": 15.9625,
+      "coverHeight": 9.94,
+      "coverSafeWidth": 15.4625,
+      "coverSafeHeight": 9.44,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 7.5,
+      "height": 9.25,
+      "coverWidth": 16.0825,
+      "coverHeight": 9.5,
+      "coverSafeWidth": 15.5825,
+      "coverSafeHeight": 9.0,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 8.0,
+      "height": 10.0,
+      "coverWidth": 17.0825,
+      "coverHeight": 10.25,
+      "coverSafeWidth": 16.5825,
+      "coverSafeHeight": 9.75,
+      "maxPages": {
+        "cream": 776,
+        "white": 828,
+        "color": 828
+      }
+    },
+    {
+      "width": 8.25,
+      "height": 6.0,
+      "coverWidth": 17.5825,
+      "coverHeight": 6.25,
+      "coverSafeWidth": 17.0825,
+      "coverSafeHeight": 5.75,
+      "maxPages": {
+        "cream": 750,
+        "white": 800,
+        "color": 800
+      }
+    },
+    {
+      "width": 8.25,
+      "height": 8.25,
+      "coverWidth": 17.5825,
+      "coverHeight": 8.5,
+      "coverSafeWidth": 17.0825,
+      "coverSafeHeight": 8.0,
+      "maxPages": {
+        "cream": 750,
+        "white": 800,
+        "color": 800
+      }
+    },
+    {
+      "width": 8.5,
+      "height": 8.5,
+      "coverWidth": 18.0825,
+      "coverHeight": 8.75,
+      "coverSafeWidth": 17.5825,
+      "coverSafeHeight": 8.25,
+      "maxPages": {
+        "cream": 550,
+        "white": 590,
+        "color": 590
+      }
+    },
+    {
+      "width": 8.5,
+      "height": 11.0,
+      "coverWidth": 18.0825,
+      "coverHeight": 11.25,
+      "coverSafeWidth": 17.5825,
+      "coverSafeHeight": 10.75,
+      "maxPages": {
+        "cream": 550,
+        "white": 590,
+        "color": 590
+      }
+    },
+    {
+      "width": 8.27,
+      "height": 11.69,
+      "coverWidth": 17.6225,
+      "coverHeight": 11.94,
+      "coverSafeWidth": 17.1225,
+      "coverSafeHeight": 11.44,
+      "maxPages": {
+        "cream": 730,
+        "white": 780,
+        "color": 0
+      }
+    }
+  ]
+}

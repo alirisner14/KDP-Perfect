@@ -1,0 +1,93 @@
+{
+  "name": "kdp-perfect",
+  "productName": "KDP Perfect",
+  "version": "0.1.0",
+  "description": "Cover template generator for Amazon KDP paperbacks: exact canvas size, bleed, safe zones and spine text area.",
+  "private": true,
+  "license": "MIT",
+  "author": "KDP Perfect contributors",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:desktop": "node scripts/dev-desktop.mjs",
+    "predev:desktop": "node scripts/ensure-electron.mjs",
+    "build": "tsc --noEmit && vite build",
+    "start": "npm run build && electron .",
+    "prestart": "node scripts/ensure-electron.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "npm run build && node scripts/smoke-desktop.mjs",
+    "presmoke": "node scripts/ensure-electron.mjs",
+    "icon": "node scripts/make-icon.mjs",
+    "predist": "node scripts/ensure-electron.mjs",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win -c.electronDist=node_modules/electron/dist",
+    "dist:dir": "npm run build && electron-builder --dir"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  },
+  "build": {
+    "appId": "com.kdpperfect.app",
+    "productName": "KDP Perfect",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.graphics-design"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Graphics"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alirisner14/KDP-Perfect.git"
+  },
+  "keywords": [
+    "kdp",
+    "amazon-kdp",
+    "book-cover",
+    "cover-template",
+    "self-publishing",
+    "paperback",
+    "electron"
+  ]
+}

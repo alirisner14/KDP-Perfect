@@ -1,0 +1,31 @@
+# Dependencies & build output
+node_modules/
+dist/
+release/
+*.tsbuildinfo
+coverage/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Logs
+npm-debug.log*
+
+# Local Claude Code state
+.claude/
+
+# ---------------------------------------------------------------------------
+# Amazon reference material that lives next to this project during development.
+# It is copyrighted by Amazon.com, Inc. and MUST NOT be committed or redistributed.
+# ---------------------------------------------------------------------------
+/Amazon Endure font EN/
+/Amazon_Endure_Templates/
+/Paperback_Manuscript_Templates/
+/Paperback_Manuscript_Blank_Template/
+/KDP_*.pdf
+/KDP_*.xlsm
+/reference/

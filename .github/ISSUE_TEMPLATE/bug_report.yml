@@ -1,0 +1,53 @@
+name: Bug report
+description: Something isn't working, or a measurement looks wrong
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! For a **wrong measurement**, please link the KDP help page or calculator value that disagrees.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you see instead?
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Book details you entered
+      description: Trim size, ink and paper, page count, reading direction, safe-zone option.
+      placeholder: "6 x 9 in, black ink on white paper, 200 pages, left to right"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app
+        2. ...
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where are you running it?
+      options:
+        - Desktop app (Windows)
+        - Desktop app (macOS)
+        - Desktop app (Linux)
+        - Web (browser)
+        - From source
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version / browser
+      placeholder: "0.1.0, or Chrome 130"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or exported files
+      description: Drag images or files here. A screenshot of the template helps a lot.
