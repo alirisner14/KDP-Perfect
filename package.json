@@ -33,13 +33,13 @@
     "three": "^0.186.1"
   },
   "devDependencies": {
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.5",
     "@types/three": "^0.186.0",
     "electron": "^44.5.1",
     "electron-builder": "^26.15.3",
     "typescript": "^7.0.2",
-    "vite": "^8.3.2",
-    "vitest": "^5.0.3"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "build": {
     "appId": "com.kdpperfect.app",
