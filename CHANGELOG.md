@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+- 3D mockup: the spine crease is now off by default (coloring-book covers are smooth and flat) and much subtler when switched on.
+- The release workflow no longer builds macOS packages (they could not be tested), and the macOS electron-builder target was removed. Windows and Linux builds are unchanged.
+
 ## [0.2.0] - 2026-10-29
 
 Hardcover covers, Kindle eBook covers, Preflight and the 3D mockup.

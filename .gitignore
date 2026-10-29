@@ -30,3 +30,6 @@ npm-debug.log*
 /KDP_*.pdf
 /KDP_*.xlsm
 /reference/
+
+# Generated marketing screenshots, recordings and mockups (scripts/marketing-capture.ts)
+/marketing/
