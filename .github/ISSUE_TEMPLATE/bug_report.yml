@@ -35,7 +35,6 @@ body:
       label: Where are you running it?
       options:
         - Desktop app (Windows)
-        - Desktop app (macOS)
         - Desktop app (Linux)
         - Web (browser)
         - From source

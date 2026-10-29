@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -41,5 +41,4 @@ jobs:
           body_path: release-notes.md
           files: |
             release/*.exe
-            release/*.dmg
             release/*.AppImage

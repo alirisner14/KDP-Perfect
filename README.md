@@ -23,9 +23,9 @@ Also: all KDP paperback trim sizes plus custom sizes, the five paperback papers 
 
 ## Install
 
-### Desktop app (Windows, macOS, Linux)
+### Desktop app (Windows and Linux)
 
-Download the installer or portable build from the [Releases](https://github.com/ontherisedigital/KDP-Perfect/releases) page, or build it yourself (below).
+Download the installer, portable exe or AppImage from the [Releases](https://github.com/ontherisedigital/KDP-Perfect/releases) page, or build it yourself (below). There is no macOS build because it can't be tested; the web version runs in any browser, including Safari.
 
 ### Run from source
 

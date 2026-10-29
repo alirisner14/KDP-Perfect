@@ -57,4 +57,4 @@ Use the **Bug report** template and include: trim size, ink/paper, page count, a
 
 1. Update `CHANGELOG.md` and bump `version` in `package.json`.
 2. Tag: `git tag v0.x.y && git push --tags`.
-3. The **Release** workflow builds Windows, macOS and Linux packages and attaches them to a GitHub release.
+3. The **Release** workflow builds Windows and Linux packages and attaches them to a GitHub release.
