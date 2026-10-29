@@ -259,11 +259,11 @@ export function initMockupScreen(ctx: Ctx): Screen {
     const spineOnLeft = layout.input.readingDirection === 'ltr'; // viewing the front cover
     const px = (offsetIn / widthIn) * out.width;
     const x = spineOnLeft ? px : out.width - px;
-    const w = Math.max(2, out.width * 0.006);
+    const w = Math.max(1.5, out.width * 0.0035);
     const dark = g.createLinearGradient(x - w * 2, 0, x + w * 2, 0);
     dark.addColorStop(0, 'rgba(0,0,0,0)');
-    dark.addColorStop(0.5, 'rgba(0,0,0,0.22)');
-    dark.addColorStop(1, 'rgba(255,255,255,0.10)');
+    dark.addColorStop(0.5, 'rgba(0,0,0,0.11)');
+    dark.addColorStop(1, 'rgba(255,255,255,0.05)');
     g.fillStyle = dark;
     g.fillRect(x - w * 2, 0, w * 4, out.height);
     return out;

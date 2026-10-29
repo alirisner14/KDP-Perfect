@@ -64,7 +64,7 @@ Preflight cannot check embedded fonts, color mode, transparency, the resolution 
 1. **Artwork.** Choose **Full wrap cover** and upload your finished cover; the back, spine and front are cut out using your book settings. Or choose **Front cover only**, upload the front, and pick a spine and back colour (or upload a back cover). With nothing uploaded, the cover template is used as a placeholder.
 2. **Pose.** Standing, Front on, Floating, Pair, Stack, Lying flat, Back + spine, Spine. Drag to orbit, scroll to zoom, **Reset view** to go back.
 3. **Image shape.** Square 1:1 is the default (ideal for square coloring books and listing images), plus 4:5, 2:3, 3:2 and 16:9.
-4. **Background, finish, shadow, spine crease.** Matte or glossy covers; a transparent background keeps the soft shadow.
+4. **Background, finish, shadow, spine crease.** Matte or glossy covers; a transparent background keeps the soft shadow. The **spine crease** (a faint fold line beside the spine, like a novel) is off by default because coloring-book covers are flat; turn it on if you want it.
 5. **Download** as PNG or JPG at 1000–4000 px on the longest side (JPG can't be transparent).
 
 For hardcovers the book is built with boards, a case spine and a recessed page block. For right-to-left books the spine is on the right.

@@ -415,6 +415,8 @@ summary {
 .preview-toolbar {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 8px;
 }
 .preview {
@@ -895,6 +897,7 @@ label.check input,
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  padding: 4px 4px 12px;
 }
 .swatch {
   width: 30px;

@@ -75,7 +75,7 @@ export const DEFAULT_STATE: AppState = {
     background: 'studio',
     finish: 'matte',
     shadow: true,
-    crease: true,
+    crease: false, // coloring-book and most glossy covers are flat; the crease is opt-in
     format: 'png',
   },
 };
