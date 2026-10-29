@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-29
+
+Hardcover covers, Kindle eBook covers, Preflight and the 3D mockup.
+
 ### Added
 - **Hardcover (case laminate) covers.** Binding switch on the book form. Wrap, board, hinge, case spine, safe areas, spine text zone and barcode box, with a hardcover-specific template and measurements. Five trim sizes, black & white (white or cream) or premium color, 76-550 pages. Verified against KDP's live cover calculator.
 - **Kindle eBook cover template.** 1600 x 2560 px ideal size, HD and minimum presets or a custom size; template with the border guide and KDP's requirements; JPG/PNG export at exact pixels.
@@ -39,5 +43,6 @@ First release: the cover template generator.
 - Interior margin helpers (`src/core/interior.ts`) as groundwork for the planned interior formatter.
 - Test suite with golden values extracted from Amazon's KDP Print File Setup Calculator V5, plus an end-to-end desktop smoke test.
 
-[Unreleased]: https://github.com/alirisner14/KDP-Perfect/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/alirisner14/KDP-Perfect/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/alirisner14/KDP-Perfect/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/alirisner14/KDP-Perfect/releases/tag/v0.1.0

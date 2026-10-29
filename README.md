@@ -6,7 +6,7 @@
   <img src="docs/images/sample-template-6x9-200pp.svg" alt="Sample cover template for a 6 x 9 inch, 200 page book" width="760">
 </p>
 
-> **Status:** v0.1 shipped the paperback template. Hardcover, Kindle eBook, Preflight and 3D mockup are new since then (see the [changelog](CHANGELOG.md)). The Word-to-KDP-interior formatter is planned, see the [roadmap](docs/ROADMAP.md).
+> **Status:** v0.2. Hardcover covers, Kindle eBook covers, Preflight and the 3D mockup join the paperback template from v0.1 (see the [changelog](CHANGELOG.md)). The Word-to-KDP-interior formatter is planned, see the [roadmap](docs/ROADMAP.md).
 >
 > KDP Perfect is an independent project. It is not affiliated with, endorsed by, or sponsored by Amazon. "Amazon", "KDP" and "Kindle Direct Publishing" are trademarks of Amazon.com, Inc. or its affiliates.
 

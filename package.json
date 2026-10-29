@@ -1,7 +1,7 @@
 {
   "name": "kdp-perfect",
   "productName": "KDP Perfect",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Cover templates, preflight checks and 3D mockups for Amazon KDP paperbacks, hardcovers and Kindle eBooks.",
   "private": true,
   "license": "MIT",

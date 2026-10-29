@@ -25,9 +25,20 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run dist -- --publish never
+      - name: Extract release notes from CHANGELOG.md
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            index($0, "## [" v "]") == 1 { on = 1; next }
+            on && index($0, "## [") == 1 { exit }
+            on { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then echo "Release $version" > release-notes.md; fi
+          cat release-notes.md
       - uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: release-notes.md
           files: |
             release/*.exe
             release/*.dmg
