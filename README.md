@@ -25,14 +25,14 @@ Also: all KDP paperback trim sizes plus custom sizes, the five paperback papers 
 
 ### Desktop app (Windows, macOS, Linux)
 
-Download the installer or portable build from the [Releases](https://github.com/alirisner14/KDP-Perfect/releases) page, or build it yourself (below).
+Download the installer or portable build from the [Releases](https://github.com/ontherisedigital/KDP-Perfect/releases) page, or build it yourself (below).
 
 ### Run from source
 
 Requires [Node.js](https://nodejs.org/) 20 or newer.
 
 ```bash
-git clone https://github.com/alirisner14/KDP-Perfect.git
+git clone https://github.com/ontherisedigital/KDP-Perfect.git
 cd KDP-Perfect
 npm install
 ```

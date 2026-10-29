@@ -25,7 +25,7 @@ We want participation in this project to be a harassment-free experience for eve
 
 Maintainers are responsible for clarifying and enforcing these standards and may remove, edit or reject comments, commits, code, issues and other contributions that don't follow this Code of Conduct, and may temporarily or permanently ban anyone for behavior they deem inappropriate, threatening, offensive or harmful.
 
-Report unacceptable behavior to the maintainers privately, using GitHub's [private vulnerability reporting](https://github.com/alirisner14/KDP-Perfect/security/advisories/new) or by contacting the repository owner through their GitHub profile. All reports are reviewed promptly and fairly, and the reporter's privacy is respected.
+Report unacceptable behavior to the maintainers privately, using GitHub's [private vulnerability reporting](https://github.com/ontherisedigital/KDP-Perfect/security/advisories/new) or by contacting the repository owner through their GitHub profile. All reports are reviewed promptly and fairly, and the reporter's privacy is respected.
 
 Enforcement follows the Contributor Covenant's [Enforcement Guidelines](https://www.contributor-covenant.org/version/2/1/code_of_conduct/#enforcement-guidelines): correction, warning, temporary ban, permanent ban.
 

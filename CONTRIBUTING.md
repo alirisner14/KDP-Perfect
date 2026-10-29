@@ -5,7 +5,7 @@ Thanks for helping! Bug reports, spec corrections, docs fixes and features are a
 ## Quick start
 
 ```bash
-git clone https://github.com/alirisner14/KDP-Perfect.git
+git clone https://github.com/ontherisedigital/KDP-Perfect.git
 cd KDP-Perfect
 npm install
 npm run dev            # UI in the browser (fastest feedback)
