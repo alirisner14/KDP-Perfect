@@ -5,12 +5,12 @@
     <meta http-equiv="Content-Security-Policy" content="<!--CSP-->" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Generate exact-size cover templates for Amazon KDP paperbacks: bleed, safe zones, spine and barcode area." />
+    <meta name="description" content="Cover templates, preflight checks and 3D mockups for Amazon KDP paperbacks, hardcovers and Kindle eBooks." />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <title>KDP Perfect</title>
   </head>
   <body>
-    <a class="skip" href="#results">Skip to results</a>
+    <a class="skip" href="#main">Skip to content</a>
 
     <header class="app-header">
       <div class="brand">
@@ -21,139 +21,331 @@
         </svg>
         <span class="brand-name">KDP Perfect</span>
       </div>
-      <nav class="tabs" aria-label="Tools">
-        <button type="button" class="tab" aria-current="page">Cover template</button>
+      <nav class="tabs" aria-label="Tools" id="tabs">
+        <button type="button" class="tab" data-tab="cover">Cover template</button>
+        <button type="button" class="tab" data-tab="ebook">Kindle eBook</button>
+        <button type="button" class="tab" data-tab="preflight">Preflight</button>
+        <button type="button" class="tab" data-tab="mockup">3D mockup</button>
         <button type="button" class="tab" disabled title="Planned: upload a Word file and get a KDP-ready interior">
-          Interior formatter <span class="badge">Soon</span>
+          Interior <span class="badge">Soon</span>
         </button>
       </nav>
     </header>
 
-    <main class="layout">
-      <section class="panel inputs" aria-labelledby="h-book">
-        <h1 id="h-book">Your book</h1>
-
-        <form id="book-form" novalidate autocomplete="off">
-          <div class="field">
-            <label for="trim">Trim size</label>
-            <select id="trim"></select>
-            <p class="hint" id="trim-note" hidden></p>
-          </div>
-
-          <div class="field custom-trim" id="custom-trim" hidden>
-            <div class="pair">
-              <label>Width <input id="custom-w" type="number" inputmode="decimal" step="any" min="0" /></label>
-              <span class="times" aria-hidden="true">&times;</span>
-              <label>Height <input id="custom-h" type="number" inputmode="decimal" step="any" min="0" /></label>
-              <span class="unit-suffix" id="custom-unit">in</span>
+    <main class="layout" id="main">
+      <!-- ============ left column: inputs ============ -->
+      <aside class="panel inputs" aria-label="Book details">
+        <div data-panel="book">
+          <h1>Your book</h1>
+          <form id="book-form" novalidate autocomplete="off">
+            <div class="field">
+              <span class="label">Binding</span>
+              <div class="seg full" role="group" aria-label="Binding" id="binding-toggle"></div>
             </div>
-          </div>
 
-          <fieldset class="field">
-            <legend>Ink and paper</legend>
-            <div class="radios" id="paper"></div>
-          </fieldset>
+            <div class="field">
+              <label for="trim">Trim size</label>
+              <select id="trim"></select>
+              <p class="hint" id="trim-note" hidden></p>
+            </div>
 
-          <div class="field">
-            <label for="pages">Number of pages</label>
-            <input id="pages" type="number" inputmode="numeric" step="1" min="1" />
-            <p class="hint" id="pages-hint"></p>
-          </div>
+            <div class="field custom-trim" id="custom-trim" hidden>
+              <div class="pair">
+                <label>Width <input id="custom-w" type="number" inputmode="decimal" step="any" min="0" /></label>
+                <span class="times" aria-hidden="true">&times;</span>
+                <label>Height <input id="custom-h" type="number" inputmode="decimal" step="any" min="0" /></label>
+                <select id="custom-unit" class="unit-select" aria-label="Unit"></select>
+              </div>
+            </div>
 
-          <details class="advanced">
-            <summary>Advanced options</summary>
             <fieldset class="field">
-              <legend>Reading direction</legend>
-              <div class="radios" id="direction"></div>
+              <legend>Ink and paper</legend>
+              <div class="radios" id="paper"></div>
             </fieldset>
+
             <div class="field">
-              <label for="safe">Safe-zone margin</label>
-              <select id="safe"></select>
+              <label for="pages">Number of pages</label>
+              <input id="pages" type="number" inputmode="numeric" step="1" min="1" />
+              <p class="hint" id="pages-hint"></p>
             </div>
+
+            <details class="advanced">
+              <summary>Advanced options</summary>
+              <fieldset class="field">
+                <legend>Reading direction</legend>
+                <div class="radios" id="direction"></div>
+              </fieldset>
+              <div class="field" id="safe-field">
+                <label for="safe">Safe-zone margin</label>
+                <select id="safe"></select>
+              </div>
+            </details>
+          </form>
+          <div id="messages" class="messages" role="status" aria-live="polite"></div>
+        </div>
+
+        <div data-panel="ebook" hidden>
+          <h1>Kindle eBook cover</h1>
+          <p class="hint lead">A single front image, sized in pixels. No spine, back cover or bleed.</p>
+          <form id="ebook-form" novalidate autocomplete="off">
             <div class="field">
-              <label for="dpi">Image resolution</label>
-              <select id="dpi"></select>
+              <label for="ebook-preset">Size</label>
+              <select id="ebook-preset"></select>
+            </div>
+            <div class="field" id="ebook-custom" hidden>
+              <div class="pair px">
+                <label>Width <input id="ebook-w" type="number" inputmode="numeric" step="1" min="1" /></label>
+                <span class="times" aria-hidden="true">&times;</span>
+                <label>Height <input id="ebook-h" type="number" inputmode="numeric" step="1" min="1" /></label>
+                <span class="unit-suffix">px</span>
+              </div>
+            </div>
+          </form>
+          <div id="ebook-messages" class="messages" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+
+      <!-- ============ right column: screens ============ -->
+      <div class="screens">
+        <!-- ---------- Cover template ---------- -->
+        <section class="panel results" data-screen="cover" id="results" aria-labelledby="h-cover" tabindex="-1">
+          <h1 id="h-cover" class="visually-hidden">Cover template and measurements</h1>
+
+          <div class="canvas-card">
+            <div class="eyebrow" id="canvas-eyebrow">Create your design canvas at</div>
+            <div class="canvas-primary" id="canvas-primary">&ndash;</div>
+            <div class="canvas-alt" id="canvas-alt"></div>
+            <div class="canvas-actions">
+              <div class="seg" role="group" aria-label="Units" id="unit-toggle"></div>
+              <button type="button" class="btn small" id="copy-canvas">Copy size</button>
+            </div>
+          </div>
+
+          <figure class="preview-wrap" id="cover-preview-wrap">
+            <div class="preview-toolbar">
+              <div class="seg" role="group" aria-label="Preview style" id="preview-toggle"></div>
+            </div>
+            <div class="preview" id="preview" role="img" aria-label="Cover template preview"></div>
+            <figcaption class="hint">Drawn to scale. The exported image matches this exactly.</figcaption>
+          </figure>
+          <div class="empty" id="empty" hidden>Enter a page count and trim size to see your template.</div>
+
+          <div class="card exports" id="cover-exports">
+            <h2>Download</h2>
+            <div class="row3">
+              <div class="field tight">
+                <span class="label">Version</span>
+                <div class="seg full" role="group" aria-label="Version" id="variant-toggle"></div>
+              </div>
+              <div class="field tight">
+                <span class="label">File type</span>
+                <div class="seg full" role="group" aria-label="File type" id="format-toggle"></div>
+              </div>
+              <div class="field tight">
+                <label for="dpi">Resolution</label>
+                <select id="dpi"></select>
+              </div>
+            </div>
+            <p class="hint" id="format-hint"></p>
+            <div class="btn-row wide">
+              <button type="button" class="btn primary" id="download">Download</button>
+              <button type="button" class="btn subtle" id="copy-summary">Copy measurements</button>
+              <button type="button" class="btn subtle" id="dl-txt">Save as text</button>
+            </div>
+            <p class="hint" id="export-hint"></p>
+          </div>
+
+          <h2>Measurements</h2>
+          <div class="table-wrap">
+            <table id="measurements">
+              <thead><tr><th scope="col">Part</th><th scope="col">Size</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <details class="steps">
+            <summary>Using this template in Canva</summary>
+            <ol>
+              <li>In Canva choose <strong>Create a design &rarr; Custom size</strong> and enter the canvas size shown at the top of this page.</li>
+              <li>Upload the <strong>Template</strong> (or the transparent <strong>Guides overlay</strong>) and stretch it to fill the page.</li>
+              <li>Lock it, then design inside the green safe areas. Let backgrounds run into the red <span id="ring-word">bleed</span>.</li>
+              <li>Hide or delete the template before you download. Export as <strong>PDF</strong> and do <em>not</em> add crop marks or extra bleed, because the canvas already includes it.</li>
+            </ol>
+            <p class="hint">Other tools work the same way: create a document at the canvas size, then place the template as a guide layer. Then run the file through <strong>Preflight</strong>.</p>
+          </details>
+
+          <details class="steps" id="guides-details">
+            <summary>Guide positions</summary>
+            <p class="hint">Distances from the top-left corner of the canvas. Use them to place rulers, guides or shapes by number.</p>
+            <div class="two-col">
+              <div class="table-wrap"><table id="guides-v"><thead><tr><th scope="col">From left</th><th scope="col">Marks</th></tr></thead><tbody></tbody></table></div>
+              <div class="table-wrap"><table id="guides-h"><thead><tr><th scope="col">From top</th><th scope="col">Marks</th></tr></thead><tbody></tbody></table></div>
             </div>
           </details>
-        </form>
+        </section>
 
-        <div id="messages" class="messages" role="status" aria-live="polite"></div>
-
-        <div class="exports">
-          <h2>Download</h2>
-          <div class="field tight">
-            <span class="label">Version</span>
-            <div class="seg full" role="group" aria-label="Version" id="variant-toggle"></div>
+        <!-- ---------- Kindle eBook ---------- -->
+        <section class="panel results" data-screen="ebook" aria-labelledby="h-ebook" hidden>
+          <h1 id="h-ebook" class="visually-hidden">Kindle eBook cover template</h1>
+          <div class="canvas-card">
+            <div class="eyebrow">Create your eBook cover at</div>
+            <div class="canvas-primary" id="ebook-primary">&ndash;</div>
+            <div class="canvas-alt" id="ebook-alt"></div>
+            <div class="canvas-actions">
+              <span class="hint" id="ebook-ratio"></span>
+              <button type="button" class="btn small" id="ebook-copy-size">Copy size</button>
+            </div>
           </div>
-          <div class="field tight">
-            <span class="label">File type</span>
-            <div class="seg full" role="group" aria-label="File type" id="format-toggle"></div>
-            <p class="hint" id="format-hint"></p>
+
+          <figure class="preview-wrap ebook-preview" id="ebook-preview-wrap">
+            <div class="preview-toolbar">
+              <div class="seg" role="group" aria-label="Preview style" id="ebook-preview-toggle"></div>
+            </div>
+            <div class="preview narrow" id="ebook-preview" role="img" aria-label="eBook cover template preview"></div>
+          </figure>
+
+          <div class="card exports">
+            <h2>Download</h2>
+            <div class="row3">
+              <div class="field tight">
+                <span class="label">Version</span>
+                <div class="seg full" role="group" aria-label="Version" id="ebook-variant-toggle"></div>
+              </div>
+              <div class="field tight">
+                <span class="label">File type</span>
+                <div class="seg full" role="group" aria-label="File type" id="ebook-format-toggle"></div>
+              </div>
+            </div>
+            <p class="hint" id="ebook-format-hint"></p>
+            <div class="btn-row wide">
+              <button type="button" class="btn primary" id="ebook-download">Download</button>
+              <button type="button" class="btn subtle" id="ebook-copy">Copy requirements</button>
+            </div>
           </div>
-          <button type="button" class="btn primary" id="download">Download</button>
-          <div class="btn-row">
-            <button type="button" class="btn subtle" id="copy-summary">Copy measurements</button>
-            <button type="button" class="btn subtle" id="dl-txt">Save as text</button>
+
+          <h2>KDP requirements</h2>
+          <div class="table-wrap"><table id="ebook-rules"><thead><tr><th scope="col">Requirement</th><th scope="col">Value</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <!-- ---------- Preflight ---------- -->
+        <section class="panel results" data-screen="preflight" aria-labelledby="h-preflight" hidden>
+          <h1 id="h-preflight" class="visually-hidden">Preflight check</h1>
+          <div class="canvas-card">
+            <div class="eyebrow">Checking against</div>
+            <div class="canvas-primary" id="pf-expected">&ndash;</div>
+            <div class="canvas-alt" id="pf-book"></div>
           </div>
-          <p class="hint" id="export-hint"></p>
-        </div>
-      </section>
 
-      <section class="panel results" id="results" aria-labelledby="h-results" tabindex="-1">
-        <h1 id="h-results" class="visually-hidden">Template and measurements</h1>
+          <label class="drop" id="pf-drop" for="pf-file">
+            <input id="pf-file" type="file" accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg" />
+            <strong>Choose your finished cover</strong>
+            <span>or drop a PDF, PNG or JPG here</span>
+          </label>
+          <p class="hint">Your file never leaves your computer.</p>
 
-        <div class="canvas-card" id="canvas-card">
-          <div class="eyebrow">Create your design canvas at</div>
-          <div class="canvas-primary" id="canvas-primary">&ndash;</div>
-          <div class="canvas-alt" id="canvas-alt"></div>
-          <div class="canvas-actions">
-            <div class="seg" role="group" aria-label="Units" id="unit-toggle"></div>
-            <button type="button" class="btn small" id="copy-canvas">Copy size</button>
+          <div id="pf-result" hidden>
+            <div class="verdict" id="pf-verdict"></div>
+            <ul class="checks" id="pf-checks"></ul>
+            <details class="steps">
+              <summary>What this doesn't check</summary>
+              <ul id="pf-notchecked"></ul>
+            </details>
+            <div class="btn-row wide">
+              <button type="button" class="btn subtle" id="pf-copy">Copy report</button>
+            </div>
+
+            <figure class="preview-wrap">
+              <div class="preview-toolbar">
+                <span class="hint" id="pf-file-name"></span>
+                <div class="seg" role="group" aria-label="Overlay" id="pf-overlay-toggle"></div>
+              </div>
+              <div class="preview" id="pf-preview"></div>
+              <figcaption class="hint" id="pf-caption">Your artwork with the KDP guides on top. Keep text and key art inside the green areas.</figcaption>
+            </figure>
           </div>
-        </div>
+          <div class="empty" id="pf-empty">Enter your book details on the left, then choose your cover file.</div>
+        </section>
 
-        <figure class="preview-wrap">
-          <div class="preview-toolbar">
-            <div class="seg" role="group" aria-label="Preview style" id="preview-toggle"></div>
+        <!-- ---------- 3D mockup ---------- -->
+        <section class="panel results" data-screen="mockup" aria-labelledby="h-mockup" hidden>
+          <h1 id="h-mockup" class="visually-hidden">3D book mockup</h1>
+
+          <div class="mock-grid">
+            <div class="mock-stage-col">
+              <div class="stage-wrap">
+                <div class="stage" id="mock-stage" style="--ar: 1">
+                  <canvas id="mock-canvas" aria-label="3D book mockup. Drag to rotate, scroll to zoom."></canvas>
+                  <div class="stage-msg" id="mock-msg" hidden></div>
+                </div>
+              </div>
+              <div class="stage-bar">
+                <span class="hint">Drag to rotate &middot; scroll to zoom</span>
+                <button type="button" class="btn small" id="mock-reset">Reset view</button>
+              </div>
+            </div>
+
+            <div class="mock-controls">
+              <div class="field tight">
+                <span class="label">Artwork</span>
+                <div class="seg full" role="group" aria-label="Artwork source" id="mock-source"></div>
+                <p class="hint" id="mock-source-hint"></p>
+                <div class="btn-col">
+                  <label class="btn file" for="mock-file">Upload cover<input id="mock-file" type="file" accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg" /></label>
+                  <label class="btn file" for="mock-back-file" id="mock-back-label" hidden>Back cover (optional)<input id="mock-back-file" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" /></label>
+                  <button type="button" class="btn subtle" id="mock-sample">Use the template as artwork</button>
+                </div>
+                <p class="hint" id="mock-art-name"></p>
+                <label class="inline-color" id="mock-spine-field" hidden>Spine and back colour <input type="color" id="mock-spine-color" value="#444444" /></label>
+              </div>
+
+              <div class="field tight">
+                <span class="label">Pose</span>
+                <div class="chips" id="mock-pose"></div>
+              </div>
+
+              <div class="field tight">
+                <span class="label">Image shape</span>
+                <div class="chips" id="mock-aspect"></div>
+              </div>
+
+              <div class="field tight">
+                <span class="label">Background</span>
+                <div class="swatches" id="mock-bg"></div>
+              </div>
+
+              <div class="row3">
+                <div class="field tight">
+                  <span class="label">Cover finish</span>
+                  <div class="seg full" role="group" aria-label="Cover finish" id="mock-finish"></div>
+                </div>
+                <div class="field tight">
+                  <label class="check"><input type="checkbox" id="mock-shadow" /> Shadow</label>
+                  <label class="check"><input type="checkbox" id="mock-crease" /> Spine crease</label>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="preview" id="preview" role="img" aria-label="Cover template preview"></div>
-          <figcaption class="hint">
-            Drawn to scale. The exported image matches this exactly, so what you see is what you download.
-          </figcaption>
-        </figure>
 
-        <div class="empty" id="empty" hidden>Enter a page count and trim size to see your template.</div>
-
-        <h2>Measurements</h2>
-        <div class="table-wrap">
-          <table id="measurements">
-            <thead>
-              <tr><th scope="col">Part</th><th scope="col">Size</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-
-        <details class="steps">
-          <summary>Using this template in Canva</summary>
-          <ol>
-            <li>In Canva choose <strong>Create a design &rarr; Custom size</strong> and enter the canvas size shown at the top of this page.</li>
-            <li>Upload the <strong>Template image</strong> (or the transparent <strong>Guides overlay</strong>) and stretch it to fill the page.</li>
-            <li>Lock it, then design inside the green safe areas. Let backgrounds run into the red bleed.</li>
-            <li>Hide or delete the template before you download. Export as <strong>PDF</strong> and do <em>not</em> add crop marks or extra bleed, because the canvas already includes the bleed.</li>
-          </ol>
-          <p class="hint">Other tools work the same way: create a document at the canvas size, then place the template as a guide layer.</p>
-        </details>
-
-        <details class="steps" id="guides-details">
-          <summary>Guide positions</summary>
-          <p class="hint">Distances from the top-left corner of the canvas. Use them to place rulers, guides or shapes by number.</p>
-          <div class="two-col">
-            <div class="table-wrap"><table id="guides-v"><thead><tr><th scope="col">From left</th><th scope="col">Marks</th></tr></thead><tbody></tbody></table></div>
-            <div class="table-wrap"><table id="guides-h"><thead><tr><th scope="col">From top</th><th scope="col">Marks</th></tr></thead><tbody></tbody></table></div>
+          <div class="card exports">
+            <h2>Download</h2>
+            <div class="row3">
+              <div class="field tight">
+                <label for="mock-size">Size (longest side)</label>
+                <select id="mock-size"></select>
+              </div>
+              <div class="field tight">
+                <span class="label">File type</span>
+                <div class="seg full" role="group" aria-label="File type" id="mock-format"></div>
+              </div>
+            </div>
+            <p class="hint" id="mock-size-hint"></p>
+            <div class="btn-row wide">
+              <button type="button" class="btn primary" id="mock-download">Download mockup</button>
+            </div>
           </div>
-        </details>
-      </section>
+          <div class="empty" id="mock-empty" hidden>Enter a valid trim size and page count to build the 3D book.</div>
+        </section>
+      </div>
     </main>
 
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>

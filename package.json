@@ -2,7 +2,7 @@
   "name": "kdp-perfect",
   "productName": "KDP Perfect",
   "version": "0.1.0",
-  "description": "Cover template generator for Amazon KDP paperbacks: exact canvas size, bleed, safe zones and spine text area.",
+  "description": "Cover templates, preflight checks and 3D mockups for Amazon KDP paperbacks, hardcovers and Kindle eBooks.",
   "private": true,
   "license": "MIT",
   "author": "KDP Perfect contributors",
@@ -28,10 +28,13 @@
     "dist:dir": "npm run build && electron-builder --dir"
   },
   "dependencies": {
-    "pdf-lib": "^1.17.1"
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",
+    "@types/three": "^0.186.0",
     "electron": "^44.5.1",
     "electron-builder": "^26.15.3",
     "typescript": "^7.0.2",
@@ -86,6 +89,10 @@
     "amazon-kdp",
     "book-cover",
     "cover-template",
+    "hardcover",
+    "kindle",
+    "preflight",
+    "3d-mockup",
     "self-publishing",
     "paperback",
     "electron"

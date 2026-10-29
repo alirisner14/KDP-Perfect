@@ -1,4 +1,4 @@
 import './styles.css';
-import { initApp } from './ui';
+import { initApp } from './app';
 
 initApp();
