@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-29
+
 ### Changed
 - 3D mockup: the spine crease is now off by default (coloring-book covers are smooth and flat) and much subtler when switched on.
 - The release workflow no longer builds macOS packages (they could not be tested), and the macOS electron-builder target was removed. Windows and Linux builds are unchanged.
@@ -47,6 +49,7 @@ First release: the cover template generator.
 - Interior margin helpers (`src/core/interior.ts`) as groundwork for the planned interior formatter.
 - Test suite with golden values extracted from Amazon's KDP Print File Setup Calculator V5, plus an end-to-end desktop smoke test.
 
-[Unreleased]: https://github.com/ontherisedigital/KDP-Perfect/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/ontherisedigital/KDP-Perfect/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/ontherisedigital/KDP-Perfect/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/ontherisedigital/KDP-Perfect/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ontherisedigital/KDP-Perfect/releases/tag/v0.1.0
