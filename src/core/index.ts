@@ -4,4 +4,8 @@ export * from './cover';
 export * from './interior';
 export * from './scene';
 export * from './summary';
+export * from './ebook';
+export * from './ebookScene';
+export * from './preflight';
+export * from './mockup';
 export * from './render';

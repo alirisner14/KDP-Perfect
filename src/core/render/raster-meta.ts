@@ -82,3 +82,33 @@ function concat(parts: Uint8Array[]): Uint8Array {
   }
   return out;
 }
+
+/** DPI declared by a PNG's `pHYs` chunk, or `null` when absent or unit-less. */
+export function readPngDpi(png: Uint8Array): number | null {
+  if (png.length < 33 || PNG_SIGNATURE.some((v, i) => png[i] !== v)) return null;
+  let pos = 8;
+  while (pos + 12 <= png.length) {
+    const length = readU32(png, pos);
+    const name = String.fromCharCode(png[pos + 4]!, png[pos + 5]!, png[pos + 6]!, png[pos + 7]!);
+    if (name === 'pHYs' && length === 9 && pos + 21 <= png.length) {
+      const ppm = readU32(png, pos + 8);
+      return png[pos + 16] === 1 && ppm > 0 ? Math.round(ppm * 0.0254 * 100) / 100 : null;
+    }
+    if (name === 'IDAT') return null; // pHYs must precede the image data
+    pos += 12 + length;
+  }
+  return null;
+}
+
+/** DPI declared by a JPEG's JFIF header, or `null` when absent or unit-less. */
+export function readJpegDpi(jpeg: Uint8Array): number | null {
+  if (jpeg.length < 18 || jpeg[0] !== 0xff || jpeg[1] !== 0xd8) return null;
+  const isJfif = jpeg[2] === 0xff && jpeg[3] === 0xe0 && jpeg[6] === 0x4a && jpeg[7] === 0x46 && jpeg[8] === 0x49 && jpeg[9] === 0x46 && jpeg[10] === 0;
+  if (!isJfif) return null;
+  const units = jpeg[13];
+  const x = (jpeg[14]! << 8) | jpeg[15]!;
+  if (x === 0) return null;
+  if (units === 1) return x;
+  if (units === 2) return Math.round(x * 2.54 * 100) / 100;
+  return null;
+}

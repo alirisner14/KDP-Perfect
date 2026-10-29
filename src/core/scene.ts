@@ -6,7 +6,7 @@
  * export is guaranteed to show exactly the same guides.
  */
 
-import { BARCODE, BLEED, SPINE_MARGIN, SPINE_TEXT_MIN_PAGES, getPaper } from './specs';
+import { BARCODE, HARDCOVER, SPINE_MARGIN, SPINE_TEXT_MIN_PAGES, getPaper } from './specs';
 import type { CoverLayout, Rect } from './cover';
 import { formatLength, formatNumber, formatSize, toPixels } from './units';
 
@@ -66,6 +66,7 @@ export interface SceneOptions {
 export const COLORS = {
   bleed: '#E5484D',
   variance: '#F5A524',
+  hinge: '#12A594',
   safe: '#1F9D68',
   spineText: '#2F6FED',
   trim: '#1A1A1A',
@@ -82,7 +83,7 @@ const LINE = 0.012;
 // --- Helpers ---------------------------------------------------------------------------------
 
 /** Four non-overlapping strips covering `outer` minus `inner` (inner must lie inside outer). */
-function frame(outer: Rect, inner: Rect): Rect[] {
+export function frame(outer: Rect, inner: Rect): Rect[] {
   const strips: Rect[] = [
     { x: outer.x, y: outer.y, w: outer.w, h: inner.y - outer.y },
     { x: outer.x, y: inner.y + inner.h, w: outer.w, h: outer.y + outer.h - (inner.y + inner.h) },
@@ -115,15 +116,16 @@ export function buildCoverScene(layout: CoverLayout, options: SceneOptions): Sce
   const fillRect = (r: Rect, color: string, opacity: number) =>
     items.push({ kind: 'rect', x: r.x, y: r.y, w: r.w, h: r.h, fill: color, fillOpacity: opacity });
 
-  // 1. Bleed band: everything outside the trim line gets trimmed off.
+  // 1. Outer ring: bleed (trimmed off) or wrap (folds around the board).
   const canvasRect: Rect = { x: 0, y: 0, w: canvas.w, h: canvas.h };
   frame(canvasRect, trim).forEach((r) => fillRect(r, COLORS.bleed, 0.3 * tint));
 
-  // 2. Trim-variance bands: inside the trim line but outside the safe boxes.
-  frame(back, safe.back).forEach((r) => fillRect(r, COLORS.variance, 0.3 * tint));
-  frame(front, safe.front).forEach((r) => fillRect(r, COLORS.variance, 0.3 * tint));
+  // 2. Variance / margin bands: inside the trim line but outside the safe boxes.
+  frame(back, layout.marginRects.back).forEach((r) => fillRect(r, COLORS.variance, 0.3 * tint));
+  frame(front, layout.marginRects.front).forEach((r) => fillRect(r, COLORS.variance, 0.3 * tint));
   if (safe.spineText) frame(spine, safe.spineText).forEach((r) => fillRect(r, COLORS.variance, 0.3 * tint));
   else fillRect(spine, COLORS.variance, 0.3 * tint); // no spine text allowed: keep the whole spine clear
+  for (const band of layout.hingeBands) fillRect(band, COLORS.hinge, 0.22 * tint);
 
   // 3. Safe areas (light tint + dashed outline).
   for (const r of [safe.back, safe.front]) {
@@ -151,7 +153,7 @@ export function buildCoverScene(layout: CoverLayout, options: SceneOptions): Sce
     dash: DASH,
   });
 
-  // 5. Trim line (outer) and spine folds.
+  // 5. Trim line / board edge (outer) and spine folds / edges.
   items.push({ kind: 'rect', x: trim.x, y: trim.y, w: trim.w, h: trim.h, stroke: COLORS.trim, strokeWidth: LINE, dash: DASH });
   for (const x of [spine.x, spine.x + spine.w]) {
     items.push({ kind: 'line', x1: x, y1: 0, x2: x, y2: canvas.h, stroke: COLORS.fold, strokeWidth: LINE, dash: [0.12, 0.05] });
@@ -166,8 +168,10 @@ export function buildCoverScene(layout: CoverLayout, options: SceneOptions): Sce
 
 function addLabels(items: Primitive[], layout: CoverLayout, options: SceneOptions): void {
   const { safe, barcode, canvas, input } = layout;
+  const hardcover = layout.binding === 'hardcover';
   const paper = getPaper(input.paper);
   const trimSize = formatSize(input.trimWidth, input.trimHeight, 'in');
+  const panelSize = formatSize(layout.panel.w, layout.panel.h, 'in');
 
   // Panel names, centered high in each safe box.
   const panelTitle = (safeBox: Rect, name: string, sub: string) => {
@@ -178,27 +182,36 @@ function addLabels(items: Primitive[], layout: CoverLayout, options: SceneOption
     items.push({ kind: 'text', x: cx(safeBox), y: y + subSize * 1.7, text: sub, size: subSize, fill: COLORS.muted, anchor: 'middle' });
     return y + subSize * 1.7;
   };
-  panelTitle(safe.front, 'FRONT COVER', `trim ${trimSize}`);
-  const backBottom = panelTitle(safe.back, 'BACK COVER', `trim ${trimSize}`);
+  const sub = hardcover ? `board ${panelSize}` : `trim ${trimSize}`;
+  panelTitle(safe.front, 'FRONT COVER', sub);
+  const backBottom = panelTitle(safe.back, 'BACK COVER', sub);
 
   // Dimension block on the back cover. This is what you type into your design tool.
   const wPx = toPixels(canvas.w, options.dpi);
   const hPx = toPixels(canvas.h, options.dpi);
   const spineText = layout.spineTextAllowed
     ? `text zone ${formatLength(layout.spineTextWidth, 'in')}`
-    : `no spine text (< ${SPINE_TEXT_MIN_PAGES} pages)`;
+    : hardcover
+      ? 'too thin for text'
+      : `no spine text (< ${SPINE_TEXT_MIN_PAGES} pages)`;
   const lines: { text: string; scale: number; bold?: boolean; fill?: string }[] = [
-    { text: 'CANVAS SIZE', scale: 0.8, bold: true, fill: COLORS.muted },
+    { text: hardcover ? 'HARDCOVER CANVAS SIZE' : 'CANVAS SIZE', scale: 0.8, bold: true, fill: COLORS.muted },
     { text: formatSize(canvas.w, canvas.h, 'in'), scale: 1.5, bold: true },
     { text: formatSize(canvas.w, canvas.h, 'cm'), scale: 1.05 },
     { text: formatSize(canvas.w, canvas.h, 'mm'), scale: 1.05 },
     { text: `${wPx} x ${hPx} px at ${options.dpi} DPI`, scale: 1.05 },
     { text: ' ', scale: 0.6 },
-    { text: `Bleed ${formatLength(BLEED, 'in')} on every outer edge`, scale: 0.9 },
+    hardcover
+      ? { text: `Wrap ${formatLength(layout.bleed, 'in')} on every outer edge`, scale: 0.9 }
+      : { text: `Bleed ${formatLength(layout.bleed, 'in')} on every outer edge`, scale: 0.9 },
     { text: `Spine ${formatLength(layout.spineWidth, 'in')} (${spineText})`, scale: 0.9 },
-    { text: `Each cover trims to ${trimSize}`, scale: 0.9 },
+    hardcover
+      ? { text: `Each board is ${panelSize}`, scale: 0.9 }
+      : { text: `Each cover trims to ${trimSize}`, scale: 0.9 },
     { text: `${input.pageCount} pages, ${paper.label.toLowerCase()}`, scale: 0.9 },
-    { text: `Safe zone: ${formatLength(layout.safeMargin, 'in')} in from the canvas edge`, scale: 0.9 },
+    hardcover
+      ? { text: `Safe zone: ${formatLength(HARDCOVER.margin, 'in')} in, ${formatLength(layout.hinge, 'in')} from spine`, scale: 0.9 }
+      : { text: `Safe zone: ${formatLength(layout.safeMargin, 'in')} in from the canvas edge`, scale: 0.9 },
   ];
   const longest = lines.reduce((a, l) => (l.text.length * l.scale > a.text.length * a.scale ? l : a), lines[0]!);
   const maxW = safe.back.w - 0.4;
@@ -241,9 +254,12 @@ function addLabels(items: Primitive[], layout: CoverLayout, options: SceneOption
 
 function addSpineLabel(items: Primitive[], layout: CoverLayout): void {
   const { spine, safe } = layout;
+  const hardcover = layout.binding === 'hardcover';
   const label = layout.spineTextAllowed
     ? `SPINE TEXT ZONE  ${formatLength(layout.spineWidth, 'in')} wide`
-    : `NO SPINE TEXT (under ${SPINE_TEXT_MIN_PAGES} pages)  ${formatLength(layout.spineWidth, 'in')} wide`;
+    : hardcover
+      ? `SPINE  ${formatLength(layout.spineWidth, 'in')} wide`
+      : `NO SPINE TEXT (under ${SPINE_TEXT_MIN_PAGES} pages)  ${formatLength(layout.spineWidth, 'in')} wide`;
   // Text runs top-to-bottom (rotated 90 degrees clockwise), the usual spine orientation.
   const zone = safe.spineText ?? spine;
   const size = Math.min(0.2, (layout.spineTextAllowed ? safe.spineText!.w : spine.w) * 0.62);
@@ -265,14 +281,25 @@ function addSpineLabel(items: Primitive[], layout: CoverLayout): void {
 /** Colour key along the bottom of the front cover's safe area. */
 function addLegend(items: Primitive[], layout: CoverLayout): void {
   const { safe } = layout;
-  const entries: { color: string; label: string; swatch: 'fill' | 'line' }[] = [
-    { color: COLORS.bleed, label: 'Bleed: extend artwork here (trimmed off)', swatch: 'fill' },
-    { color: COLORS.variance, label: 'Trim variance: keep text out', swatch: 'fill' },
-    { color: COLORS.safe, label: 'Safe zone: text and key art', swatch: 'line' },
-    { color: COLORS.spineText, label: `Spine text zone (${formatLength(SPINE_MARGIN, 'in')} from folds)`, swatch: 'line' },
-    { color: COLORS.trim, label: 'Trim line (cut here)', swatch: 'line' },
-    { color: COLORS.fold, label: 'Spine fold', swatch: 'line' },
-  ];
+  const hardcover = layout.binding === 'hardcover';
+  const entries: { color: string; label: string; swatch: 'fill' | 'line' }[] = hardcover
+    ? [
+        { color: COLORS.bleed, label: 'Wrap: extend artwork here (folds under)', swatch: 'fill' },
+        { color: COLORS.variance, label: 'Margin: keep text out', swatch: 'fill' },
+        { color: COLORS.hinge, label: 'Hinge: no text or barcode', swatch: 'fill' },
+        { color: COLORS.safe, label: 'Safe zone: text and key art', swatch: 'line' },
+        { color: COLORS.spineText, label: `Spine text zone (${formatLength(SPINE_MARGIN, 'in')} from edges)`, swatch: 'line' },
+        { color: COLORS.trim, label: 'Board edge (wrap folds here)', swatch: 'line' },
+        { color: COLORS.fold, label: 'Spine edge', swatch: 'line' },
+      ]
+    : [
+        { color: COLORS.bleed, label: 'Bleed: extend artwork here (trimmed off)', swatch: 'fill' },
+        { color: COLORS.variance, label: 'Trim variance: keep text out', swatch: 'fill' },
+        { color: COLORS.safe, label: 'Safe zone: text and key art', swatch: 'line' },
+        { color: COLORS.spineText, label: `Spine text zone (${formatLength(SPINE_MARGIN, 'in')} from folds)`, swatch: 'line' },
+        { color: COLORS.trim, label: 'Trim line (cut here)', swatch: 'line' },
+        { color: COLORS.fold, label: 'Spine fold', swatch: 'line' },
+      ];
   const box = safe.front;
   const longest = Math.max(...entries.map((e) => e.label.length));
   const size = fitSize('x'.repeat(longest), box.w - 0.7, 0.13, 0.065);

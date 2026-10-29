@@ -175,9 +175,9 @@ describe('validation', () => {
     expect(l.warnings.map((w) => w.code)).toContain('paper-unavailable');
   });
 
-  it('only softly warns about odd custom trim sizes', () => {
+  it('rejects custom trim sizes outside KDP’s window', () => {
     const l = computeCoverLayout({ ...base, trimId: undefined, trimWidth: 3, trimHeight: 5, pageCount: 100 });
-    expect(l.valid).toBe(true);
+    expect(l.valid).toBe(false);
     expect(l.warnings.map((w) => w.code)).toContain('trim-custom-range');
   });
 

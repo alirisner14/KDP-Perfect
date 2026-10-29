@@ -1,0 +1,32 @@
+{
+  "_comment": "Results copied from KDP's public Print Cover Calculator (kdp.amazon.com/cover-calculator) on 2026-10-29, inches, as displayed (3 decimals). Used as golden values; tolerance 0.0015.",
+  "hardcover": [
+    { "trim": "6x9", "paper": "bw-white", "pages": 76, "fullW": 13.935, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 0.36, "spineSafeW": 0.235, "spineSafeH": 8.986 },
+    { "trim": "6x9", "paper": "bw-white", "pages": 200, "fullW": 14.214, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 0.639, "spineSafeW": 0.514, "spineSafeH": 8.986 },
+    { "trim": "6x9", "paper": "bw-white", "pages": 400, "fullW": 14.665, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 1.09, "spineSafeW": 0.965, "spineSafeH": 8.986 },
+    { "trim": "6x9", "paper": "bw-white", "pages": 550, "fullW": 15.002, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 1.428, "spineSafeW": 1.303, "spineSafeH": 8.986 },
+    { "trim": "6x9", "paper": "bw-cream", "pages": 200, "fullW": 14.264, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 0.689, "spineSafeW": 0.564, "spineSafeH": 8.986 },
+    { "trim": "6x9", "paper": "color-premium", "pages": 76, "fullW": 13.942, "fullH": 10.417, "boardW": 6.197, "boardH": 9.236, "spine": 0.367, "spineSafeW": 0.242, "spineSafeH": 8.986 },
+    { "trim": "5.5x8.5", "paper": "bw-white", "pages": 200, "fullW": 13.214, "fullH": 9.917, "boardW": 5.697, "boardH": 8.736, "spine": 0.639, "spineSafeW": 0.514, "spineSafeH": 8.486 },
+    { "trim": "6.14x9.21", "paper": "bw-white", "pages": 200, "fullW": 14.494, "fullH": 10.627, "boardW": 6.337, "boardH": 9.446, "spine": 0.639, "spineSafeW": 0.514, "spineSafeH": 9.196 },
+    { "trim": "7x10", "paper": "bw-white", "pages": 200, "fullW": 16.214, "fullH": 11.417, "boardW": 7.197, "boardH": 10.236, "spine": 0.639, "spineSafeW": 0.514, "spineSafeH": 9.986 },
+    { "trim": "8.25x11", "paper": "bw-white", "pages": 200, "fullW": 18.714, "fullH": 12.417, "boardW": 8.447, "boardH": 11.236, "spine": 0.639, "spineSafeW": 0.514, "spineSafeH": 10.986 }
+  ],
+  "paperback": [
+    { "trim": "6x9", "paper": "bw-white", "pages": 200, "fullW": 12.7, "fullH": 9.25, "spine": 0.45 },
+    { "trim": "6x9", "paper": "bw-cream", "pages": 200, "fullW": 12.75, "fullH": 9.25, "spine": 0.5 },
+    { "trim": "6x9", "paper": "bw-groundwood", "pages": 100, "fullW": 12.485, "fullH": 9.25, "spine": 0.235 },
+    { "trim": "6x9", "paper": "bw-groundwood", "pages": 200, "fullW": 12.72, "fullH": 9.25, "spine": 0.47 },
+    { "trim": "6x9", "paper": "bw-groundwood", "pages": 400, "fullW": 13.19, "fullH": 9.25, "spine": 0.94 },
+    { "trim": "6x9", "paper": "color-premium", "pages": 200, "fullW": 12.719, "fullH": 9.25, "spine": 0.469 },
+    { "trim": "6x9", "paper": "color-standard", "pages": 200, "fullW": 12.7, "fullH": 9.25, "spine": 0.45 },
+    { "trim": "6x9", "paper": "bw-white", "pages": 24, "fullW": 12.304, "fullH": 9.25, "spine": 0.054 },
+    { "trim": "6x9", "paper": "bw-white", "pages": 828, "fullW": 14.115, "fullH": 9.25, "spine": 1.865 },
+    { "trim": "8.5x8.5", "paper": "bw-white", "pages": 590, "fullW": 18.579, "fullH": 8.75, "spine": 1.329 }
+  ],
+  "paperbackCustom": [
+    { "w": 4, "h": 6, "paper": "bw-white", "pages": 120, "fullW": 8.52, "fullH": 6.25 },
+    { "w": 5.5, "h": 8.25, "paper": "bw-white", "pages": 120, "fullW": 11.52, "fullH": 8.5 },
+    { "w": 8.5, "h": 11.69, "paper": "bw-white", "pages": 120, "fullW": 17.52, "fullH": 11.94 }
+  ]
+}

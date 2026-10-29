@@ -4,7 +4,7 @@
  */
 
 import type { CoverLayout } from './cover';
-import { BARCODE, SPINE_MARGIN, getPaper } from './specs';
+import { BARCODE, HARDCOVER, SPINE_MARGIN, getPaper } from './specs';
 import { formatLength, formatSize, toPixels, type Unit } from './units';
 
 export interface MeasurementRow {
@@ -18,17 +18,31 @@ export interface MeasurementRow {
 
 export function measurementRows(layout: CoverLayout): MeasurementRow[] {
   const { canvas, safe, input } = layout;
+  const hardcover = layout.binding === 'hardcover';
   const ltr = input.readingDirection === 'ltr';
+  const pair = `${ltr ? 'Back' : 'Front'} cover | ${ltr ? 'Front' : 'Back'} cover`;
   const rows: MeasurementRow[] = [
-    { id: 'canvas', label: 'Full cover canvas (with bleed)', w: canvas.w, h: canvas.h, note: 'Use this as your custom design size.' },
-    { id: 'bleed', label: 'Bleed (every outer edge)', w: layout.bleed, note: 'Extend backgrounds and images this far past the trim line.' },
     {
-      id: 'trim',
-      label: `${ltr ? 'Back' : 'Front'} cover | ${ltr ? 'Front' : 'Back'} cover (each, trimmed)`,
-      w: input.trimWidth,
-      h: input.trimHeight,
+      id: 'canvas',
+      label: `Full cover canvas (with ${hardcover ? 'wrap' : 'bleed'})`,
+      w: canvas.w,
+      h: canvas.h,
+      note: 'Use this as your custom design size.',
     },
-    { id: 'spine', label: 'Spine width', w: layout.spineWidth, note: `${input.pageCount} pages x ${getPaper(input.paper).thickness}" per page.` },
+    hardcover
+      ? { id: 'bleed', label: 'Wrap (every outer edge)', w: layout.bleed, note: 'Extend backgrounds and images this far past the board edge; it folds around the board.' }
+      : { id: 'bleed', label: 'Bleed (every outer edge)', w: layout.bleed, note: 'Extend backgrounds and images this far past the trim line.' },
+    hardcover
+      ? { id: 'trim', label: `${pair} (each board)`, w: layout.panel.w, h: layout.panel.h, note: `Trim size ${formatSize(input.trimWidth, input.trimHeight, 'in')} plus 0.197" x 0.236".` }
+      : { id: 'trim', label: `${pair} (each, trimmed)`, w: input.trimWidth, h: input.trimHeight },
+    {
+      id: 'spine',
+      label: 'Spine width',
+      w: layout.spineWidth,
+      note: hardcover
+        ? `${input.pageCount} pages x ${getPaper(input.paper).thickness}" per page, plus ${formatLength(HARDCOVER.spineAddon, 'in')} for the case.`
+        : `${input.pageCount} pages x ${getPaper(input.paper).thickness}" per page.`,
+    },
   ];
   if (layout.spineTextAllowed && safe.spineText) {
     rows.push({
@@ -36,16 +50,31 @@ export function measurementRows(layout: CoverLayout): MeasurementRow[] {
       label: 'Spine text zone',
       w: safe.spineText.w,
       h: safe.spineText.h,
-      note: `${formatLength(SPINE_MARGIN, 'in')} clear of each fold.`,
+      note: `${formatLength(SPINE_MARGIN, 'in')} clear of each ${hardcover ? 'edge' : 'fold'}.`,
     });
   } else {
     rows.push({ id: 'spine-text', label: 'Spine text zone', w: Math.max(0, layout.spineTextWidth), note: 'Not available: keep the spine free of text.' });
   }
+  if (hardcover) rows.push({ id: 'hinge', label: 'Hinge (each side of the spine)', w: layout.hinge, note: 'Keep text and barcodes out of this band.' });
   rows.push(
-    { id: 'safe-overall', label: 'Safe zone (whole cover)', w: safe.overall.w, h: safe.overall.h, note: `${formatLength(layout.safeMargin, 'in')} in from the canvas edge.` },
+    {
+      id: 'safe-overall',
+      label: 'Safe zone (whole cover)',
+      w: safe.overall.w,
+      h: safe.overall.h,
+      note: hardcover ? `${formatLength(HARDCOVER.margin, 'in')} inside the board edge.` : `${formatLength(layout.safeMargin, 'in')} in from the canvas edge.`,
+    },
     { id: 'safe-back', label: 'Back cover safe area', w: safe.back.w, h: safe.back.h },
     { id: 'safe-front', label: 'Front cover safe area', w: safe.front.w, h: safe.front.h },
-    { id: 'barcode', label: 'Barcode area (back cover)', w: BARCODE.width, h: BARCODE.height, note: `${formatLength(BARCODE.margin, 'in')} from the spine and the bottom trim line. Keep clear.` },
+    {
+      id: 'barcode',
+      label: 'Barcode area (back cover)',
+      w: BARCODE.width,
+      h: BARCODE.height,
+      note: hardcover
+        ? `${formatLength(HARDCOVER.barcodeBottom, 'in')} above the board bottom and ${formatLength(HARDCOVER.barcodeSide, 'in')} beyond the hinge. Keep clear.`
+        : `${formatLength(BARCODE.margin, 'in')} from the spine and the bottom trim line. Keep clear.`,
+    },
   );
   return rows;
 }
@@ -63,7 +92,7 @@ export function summaryText(layout: CoverLayout, unit: Unit, dpi: number): strin
   const { canvas, input } = layout;
   const L = (v: number) => formatLength(v, unit);
   const out: string[] = [];
-  out.push('KDP COVER TEMPLATE');
+  out.push(layout.binding === 'hardcover' ? 'KDP HARDCOVER (CASE LAMINATE) COVER TEMPLATE' : 'KDP PAPERBACK COVER TEMPLATE');
   out.push(`Trim size: ${formatSize(input.trimWidth, input.trimHeight, unit)}`);
   out.push(`Pages: ${input.pageCount} (${paperLabel(layout)})`);
   out.push(`Reading direction: ${input.readingDirection === 'ltr' ? 'left to right' : 'right to left'}`);
@@ -98,6 +127,7 @@ export function exportFileName(layout: CoverLayout, variant: ExportVariant, ext:
   const { input } = layout;
   const trim = `${Number(input.trimWidth.toFixed(3))}x${Number(input.trimHeight.toFixed(3))}in`;
   const paper = input.paper.replace(/^bw-/, '');
-  const kind = variant === 'overlay' ? 'kdp-cover-guides-overlay' : 'kdp-cover-template';
+  const binding = layout.binding === 'hardcover' ? 'hardcover-' : '';
+  const kind = variant === 'overlay' ? `kdp-${binding}cover-guides-overlay` : `kdp-${binding}cover-template`;
   return `${kind}_${trim}_${input.pageCount}pp_${paper}.${ext}`;
 }
