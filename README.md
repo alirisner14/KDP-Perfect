@@ -1,31 +1,31 @@
 # KDP Perfect
 
-**Exact-size cover templates for Amazon KDP paperbacks.** Enter your trim size, paper and page count and get a ready-to-use full-wrap cover template with the bleed, safe zones, spine text area and barcode box clearly marked, plus the precise canvas size to type into Canva (or any design tool).
+**Cover templates, preflight checks and 3D mockups for Amazon KDP.** Enter your trim size, paper and page count and get an exact-size full-wrap cover template for paperbacks or hardcovers, a Kindle eBook cover template, a check of your finished cover against KDP's size rules, and a 3D book mockup, including a square 1:1 image.
 
 <p align="center">
   <img src="docs/images/sample-template-6x9-200pp.svg" alt="Sample cover template for a 6 x 9 inch, 200 page book" width="760">
 </p>
 
-> **Status:** v0.1: cover template generator. The Word-to-KDP-interior formatter is planned, see the [roadmap](docs/ROADMAP.md).
+> **Status:** v0.1 shipped the paperback template. Hardcover, Kindle eBook, Preflight and 3D mockup are new since then (see the [changelog](CHANGELOG.md)). The Word-to-KDP-interior formatter is planned, see the [roadmap](docs/ROADMAP.md).
 >
 > KDP Perfect is an independent project. It is not affiliated with, endorsed by, or sponsored by Amazon. "Amazon", "KDP" and "Kindle Direct Publishing" are trademarks of Amazon.com, Inc. or its affiliates.
 
-## Features
+## What it does
 
-- **Correct canvas size, instantly.** Width and height in inches, cm, mm and pixels, with a one-click copy. The size is printed on the template itself, too.
-- **Everything marked on the artwork:** bleed (0.125"), trim lines, trim-variance band, safe areas for the front cover, back cover and spine text, spine folds and the 2" × 1.2" barcode area.
-- **Spine maths from KDP's numbers.** Spine width and spine-text width from your page count and paper type. Warns when the spine can't carry text (KDP needs 79+ pages).
-- **Download at actual size** as **PNG**, **JPG** or **PDF**. Images carry their DPI so they open at real inches; the PDF page is exactly the cover size. A transparent **guides overlay** (PNG/PDF) lets you lay the guides over finished artwork.
-- **All KDP trim sizes** plus custom sizes, black or color ink, white or cream paper, right-to-left books, and a more cautious safe-zone option.
-- **Guide positions table** so you can place rulers and shapes by number.
-- **Limits enforced:** minimum and maximum page counts per trim size and paper.
-- **Works offline,** keeps your data on your machine. No account, no tracking.
+| Tool | What you get |
+| --- | --- |
+| **Cover template** | The exact canvas size (in, cm, mm, px) and a marked-up template for a **paperback** or **hardcover** (case laminate): bleed or wrap, trim lines, hinge, safe areas, spine text zone and barcode box. Download as PNG, JPG or PDF at actual size, plus a transparent guides overlay. |
+| **Kindle eBook** | The 1600 × 2560 px front-cover template (or any custom size) with KDP's rules: ratio, limits, border, what to leave out. |
+| **Preflight** | Drop in your finished cover (PDF, PNG or JPG). It checks the page size and shape against your book, flags low resolution, and explains mismatches ("the width suggests a 240-page spine"). Your artwork is shown with the guides on top. |
+| **3D mockup** | A real 3D book with your cover on it: eight poses (standing, front-on, floating, pair, stack, lying flat, back, spine), matte or glossy, soft shadows, transparent or coloured backgrounds, and **1:1 / 4:5 / 2:3 / 3:2 / 16:9** output. Works for paperbacks and hardcovers, including square trims. |
+
+Also: all KDP paperback trim sizes plus custom sizes, the five paperback papers (including groundwood and standard color), hardcover sizes, right-to-left books, page-count limits, and a "guide positions" table for placing rulers by number. Everything runs on your computer; nothing is uploaded.
 
 ## Install
 
-### Desktop app (Windows)
+### Desktop app (Windows, macOS, Linux)
 
-Download the installer or the portable `.exe` from the [Releases](https://github.com/alirisner14/KDP-Perfect/releases) page, or build it yourself (below).
+Download the installer or portable build from the [Releases](https://github.com/alirisner14/KDP-Perfect/releases) page, or build it yourself (below).
 
 ### Run from source
 
@@ -54,42 +54,44 @@ The first desktop command downloads the Electron binary (about 100 MB) once.
 
 ## Using a template in Canva
 
-1. Enter your book details and note the **canvas size** at the top of the page.
+1. Enter your book details and note the **canvas size** at the top of the Cover template page.
 2. In Canva choose **Create a design → Custom size** and enter that width and height (inches work; so do pixels).
 3. Download the **Template** (PNG or JPG) or the transparent **Guides overlay** (PNG), upload it to Canva and stretch it to fill the page.
-4. Lock it, design inside the green safe areas, and let backgrounds run into the red bleed.
-5. Hide or delete the template, then export a **PDF** for KDP. Don't add crop marks or extra bleed in the export settings; the canvas already includes the bleed.
+4. Lock it, design inside the green safe areas, and let backgrounds run into the red bleed (paperback) or wrap (hardcover).
+5. Hide or delete the template, then export a **PDF** for KDP. Don't add crop marks or extra bleed in the export settings; the canvas already includes it.
+6. Drop the PDF into **Preflight** to confirm it matches your book before you upload.
 
-The same steps work in Affinity, Photoshop, Illustrator, InDesign, GIMP or Word: make a document at the canvas size and place the template as a guide layer.
+The same steps work in Affinity, Photoshop, Illustrator, InDesign, GIMP or Word.
 
 ## How the numbers are calculated
 
-All values come from Amazon's *KDP Print File Setup Calculator V5* and KDP's help pages. Every number and its source is listed in [docs/KDP-SPECS.md](docs/KDP-SPECS.md).
+Every figure is checked against **KDP's own cover calculator**: the paperback numbers against the V5 workbook and the hardcover numbers against the live calculator. The test suite fails if they drift. Sources and the places they disagree are in [docs/KDP-SPECS.md](docs/KDP-SPECS.md).
 
-| Measure | Rule |
-| --- | --- |
-| Spine width | pages × page thickness (white 0.002252", cream 0.0025", premium color 0.002347", standard color 0.002252") |
-| Canvas width | bleed + trim width + spine + trim width + bleed |
-| Canvas height | bleed + trim height + bleed |
-| Bleed | 0.125" on every outer edge |
-| Safe zone | 0.25" from the outer canvas edge (0.125" inside the trim line) |
-| Spine text zone | spine width − 2 × 0.0625", only for 79+ pages |
-| Barcode area | 2" × 1.2", 0.25" from the spine and the bottom trim line |
+| Measure | Paperback | Hardcover (case laminate) |
+| --- | --- | --- |
+| Outer ring | 0.125" bleed | 0.591" wrap (15 mm) |
+| Cover panels | trim size | board = trim + 0.197" wide, + 0.236" tall |
+| Spine | pages × thickness | pages × thickness + 0.189" |
+| Canvas width | bleed + trim + spine + trim + bleed | wrap + board + spine + board + wrap |
+| Safe zone | 0.25" from the canvas edge | 0.125" inside the board edge; 0.394" hinge beside the spine |
+| Spine text | spine − 2 × 0.0625", 79+ pages | spine − 2 × 0.0625" |
+| Pages | 24–828 (per size and paper) | 76–550 |
 
-The calculations are verified in the test suite against every trim size in Amazon's own calculator.
+Page thickness: white 0.002252", cream 0.0025", groundwood 0.00235", premium color 0.002347", standard color 0.002252".
 
 ## Project layout
 
 ```
-src/core/      pure TypeScript: specs, cover maths, scene builder, SVG/PNG/JPG/PDF renderers
-src/app/       the UI (vanilla TypeScript + CSS, no framework)
+src/core/      pure TypeScript: specs, cover maths, eBook, preflight, scene builder, renderers, mockup helpers
+src/app/       the UI (vanilla TypeScript + CSS): shell, shared book form, one module per screen
+src/app/mockup/   the three.js book (loaded only when the 3D mockup is opened)
 electron/      desktop shell (main process, preload bridge)
-tests/         unit tests (Vitest), including golden data from Amazon's calculator
+tests/         unit tests (Vitest) with golden data from KDP's calculators
 scripts/       dev, icon and end-to-end smoke-test helpers
 docs/          architecture, KDP specs, roadmap, user guide
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit together and how the same code runs as a desktop and a web app.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit together and how the same code runs as a desktop and a web app. The core has no UI dependencies, so it can be reused in other apps.
 
 ## Scripts
 
@@ -99,7 +101,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit together
 | `npm test` | Run the unit tests |
 | `npm run typecheck` | TypeScript type check |
 | `npm run build` | Type check and build the web app into `dist/` |
-| `npm run smoke` | Launch the real Electron app, export PNG/JPG/PDF and inspect the files |
+| `npm run smoke` | Launch the real Electron app and exercise every screen: exports, preflight (pdf.js), 3D mockup (WebGL) |
 | `npm run dist:win` | Package the Windows installer and portable exe |
 
 ## Roadmap

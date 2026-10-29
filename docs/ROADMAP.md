@@ -1,10 +1,11 @@
 # Roadmap
 
-## Phase 1: Cover template generator (shipped in v0.1)
+## Shipped
 
-Trim size, ink/paper and page count in; exact canvas size and a marked-up template out (PNG, JPG, PDF), as a desktop app and a web build.
+- **v0.1:** paperback cover template generator (PNG, JPG, PDF at actual size; desktop and web).
+- **Unreleased:** hardcover (case laminate) templates, Kindle eBook cover template, Preflight check, 3D book mockup (including 1:1 output).
 
-## Phase 2: Word document → KDP interior (planned)
+## Next: Word document → KDP interior (planned)
 
 > **Goal:** the user uploads a `.docx`, picks a trim size, and gets a print-ready interior that meets KDP's requirements, with a customizable opening page for each chapter. The final page count feeds straight into the cover generator.
 
@@ -88,9 +89,18 @@ Ship four presets (Classic, Modern, Minimal, Ornamental) and let users tweak any
 
 ## Ideas backlog
 
-- Hardcover and case-laminate cover dimensions
-- Kindle eBook cover size check
+- **Image-folder interior for coloring books and planners** (one image per page, bleed and gutter margins, blank reverse pages, front matter). Best added with the Coloring Book Studio integration.
+- Preflight: check embedded fonts, the resolution of images placed inside a PDF, color mode and transparency (needs a deeper PDF parser).
+- Mockup: open-book and hand-held poses, custom camera presets, batch export of every pose.
 - Batch templates for a series (same trim/paper, different page counts)
 - Printable PDF "ruler check" sheet
 - Localised UI (the folder already has KDP templates in eight languages)
 - Import page count from an uploaded PDF interior
+
+### Considered and set aside
+
+- A cover composer that assembles front/back/spine artwork into one file: designers already export a single cover from their design tool.
+- ISBN barcode generation: most authors use KDP's free ISBN.
+- Royalty and print-cost calculator: KDP shows it at publish time.
+- Saved book profiles: not needed yet.
+- Embedding as a package or iframe: the core is UI-free, so other apps can lift the logic directly (see ARCHITECTURE.md).

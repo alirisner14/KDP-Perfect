@@ -15,8 +15,9 @@ Thumbs.db
 # Logs
 npm-debug.log*
 
-# Local Claude Code state
-.claude/
+# Local Claude Code state (the push-it profile is the one tracked file)
+.claude/*
+!.claude/push-it.md
 
 # ---------------------------------------------------------------------------
 # Amazon reference material that lives next to this project during development.

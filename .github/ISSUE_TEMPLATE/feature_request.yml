@@ -23,7 +23,10 @@ body:
     attributes:
       label: Area
       options:
-        - Cover template
+        - Cover template (paperback / hardcover)
+        - Kindle eBook cover
+        - Preflight check
+        - 3D mockup
         - Exports (PNG / JPG / PDF)
         - Interior formatter (planned)
         - Desktop app
